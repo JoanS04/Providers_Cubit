@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.shop),
             onPressed: () {
               // TODO: Logout
               Navigator.of(context).pushReplacementNamed('logOrReg');
@@ -21,31 +21,38 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+      body: ListView(
+      padding: const EdgeInsets.all(10.0),
+      children: [
+         _card(),
+         SizedBox(height: 30.0),
+        ]),
+      );
+  }
+  Widget _card() {
+    return Card(
+      elevation: 10,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+      child: Column(
+        children: [
+          const ListTile(
+            leading: Icon(Icons.photo_album, color: Colors.blue),
+            title: Text('Títol de la targeta'),
+            subtitle: Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.'),
+
+
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                missatge,
-                style: TextStyle(
-                  fontSize: 32.0,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
+            children: [
+              TextButton(onPressed: (){}, child: const Icon(Icons.remove)),
+              Expanded(child: SizedBox(),),
+              Text("Preu"),
+              Expanded(child: SizedBox(),),
+              TextButton(onPressed: (){}, child: const Icon(Icons.add)),
             ],
           )
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acció quan es polsa el botó d'afegir
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
       ),
     );
   }
