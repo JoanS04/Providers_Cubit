@@ -1,6 +1,5 @@
 import 'screens/screens.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        home: BlocProvider(
-        create: (context) => DataCubit(),
-      ),
         theme: ThemeData(
           // This is the theme of your application.
           //
