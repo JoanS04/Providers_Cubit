@@ -55,18 +55,20 @@ class listWidgets extends StatelessWidget {
                   children: [
                     for (int i = 0; i < ((state.products.length > 0)? 3 : 0); i++)
                       _cardArticle(state.products[i])
-                    // for (Products p in state.products)
-                    //   _cardArticle(p)
                   ],
                 );
               },
             ),
-        // Column(children: [
-        //   _cardArticle(),
-        //   _cardArticle(),
-        // ],),
         Expanded(child: SizedBox()),
-        _cardCarts(),
+        BlocBuilder<ProductsProvider, DataState>(
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    _cardCarts(),
+                  ],
+                );
+              },
+            ),  
       ],
     );
   }
