@@ -1,9 +1,24 @@
-import 'screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantilla_login_register/providers/products_provider.dart';
+import 'package:plantilla_login_register/providers/states.dart';
+import 'package:plantilla_login_register/screens/home_screen.dart';
+import 'package:plantilla_login_register/screens/login_or_register.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() => runApp(AppState());
+
+class AppState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: BlocProvider(
+        create: (context) => ProductsProvider(),
+        child: MyApp(),
+      ),
+    );
+  }
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
