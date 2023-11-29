@@ -11,7 +11,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final missatge = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(
@@ -19,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.shop),
+            icon: Icon(Icons.logout),
             onPressed: () {
               // TODO: Logout
               Navigator.of(context).pushReplacementNamed('logOrReg');

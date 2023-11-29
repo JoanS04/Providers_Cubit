@@ -1,9 +1,6 @@
-import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantilla_login_register/models/card_item.dart';
 import 'package:plantilla_login_register/models/products.dart';
-import 'dart:convert';
-import 'dart:convert' as convert;
 
 import 'package:plantilla_login_register/providers/states_card.dart';
 
