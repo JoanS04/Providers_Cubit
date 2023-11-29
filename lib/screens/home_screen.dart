@@ -54,7 +54,7 @@ class listWidgets extends StatelessWidget {
                 return Column(
                   children: [
                     for (int i = 0; i < ((state.products.length > 0)? 3 : 0); i++)
-                      _cardArticle(state.products[i])
+                      _cardArticle(state.products[i], productsCubit)
                   ],
                 );
               },
@@ -64,7 +64,8 @@ class listWidgets extends StatelessWidget {
               builder: (context, state) {
                 return Column(
                   children: [
-                    _cardCarts(),
+                    for (int i = 0; i < ((state.products.length > 0)? 3 : 0); i++)
+                      if (state.contador[state.products[i]] !> 0) _cardCarts(state.products[i], state.contador[state.products[i]]!)
                   ],
                 );
               },
@@ -73,7 +74,7 @@ class listWidgets extends StatelessWidget {
     );
   }
 
-  Widget _cardArticle(Products p) {
+  Widget _cardArticle(Products p, ProductsProvider productsCubit) {
     final targeta = Column(
       children: [
         FadeInImage(
@@ -85,7 +86,7 @@ class listWidgets extends StatelessWidget {
         ),
         Row(
           children: [
-            ElevatedButton(onPressed: () => {}, child: const Icon(Icons.remove)),
+            ElevatedButton(onPressed: () => {productsCubit.add(p)}, child: const Icon(Icons.remove)),
             const Expanded(child: SizedBox()),
             Text("${p.price}€"),
             const Expanded(child: SizedBox()),
@@ -115,17 +116,17 @@ class listWidgets extends StatelessWidget {
     );
   }
 
-  Widget _cardCarts() {
+  Widget _cardCarts(Products p, int num) {
     final targeta = Row(
       children: [
-        const FadeInImage(
+        FadeInImage(
           placeholder: NetworkImage('https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'),
-          image: NetworkImage('https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'),
+          image: NetworkImage(p.image),
           fadeInDuration: Duration(milliseconds: 100),
           width: 50,
           fit: BoxFit.cover,
         ),
-        Expanded(child: Text("Cantidad preutotal", textAlign: TextAlign.center)),
+        Expanded(child: Text("${num} U ${num * p.price}€", textAlign: TextAlign.center)),
       ],
     );
     return Container(

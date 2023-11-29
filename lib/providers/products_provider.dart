@@ -29,4 +29,8 @@ class ProductsProvider extends Cubit<DataState> {
       // emit(ErrorDataState('Error: $e'));
     }
   }
+
+  add(Products p){
+    emit(DataState()..suma(p));
+  }
 }
