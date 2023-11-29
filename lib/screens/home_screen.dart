@@ -147,50 +147,66 @@ class _HomeScreenWidgetsState extends State<HomeScreenWidgets> {
   }
 
   Widget _cardCarts(ProductsProviderCard providerCart, BuildContext context) {
-    final cartItems = providerCart.state.cart;
-    double totalPrice = 0.0;
+  final cartItems = providerCart.state.cart;
+  double totalPrice = 0.0;
 
-    for (final cartItem in cartItems) {
-      totalPrice += cartItem.product.price * cartItem.quantity;
-    }
+  for (final cartItem in cartItems) {
+    totalPrice += cartItem.product.price * cartItem.quantity;
+  }
 
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.4,
-      height: MediaQuery.of(context).size.height * 0.3,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromARGB(255, 143, 143, 143).withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 10,
-            offset: Offset(0, 3),
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.4,
+    height: MediaQuery.of(context).size.height * 0.3,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10.0),
+      boxShadow: [
+        BoxShadow(
+          color: Color.fromARGB(255, 143, 143, 143).withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 10,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Column(
+        children: [
+          Text(
+            'Total: ${totalPrice.toStringAsFixed(2)} €',
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: cartItems.length,
+              itemBuilder: (context, index) {
+                final cartItem = cartItems[index];
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        Image.network(
+                          cartItem.product.image,
+                          width: 50, // Ajusta el ancho de la imagen según tus necesidades
+                          height: 50, // Ajusta la altura de la imagen según tus necesidades
+                          fit: BoxFit.cover, // Ajusta la forma en que la imagen se adapta al espacio disponible
+                        ),
+                        SizedBox(width: 10), // Espacio entre la imagen y el texto
+                        Text(
+                          'x ${cartItem.quantity} - ${cartItem.product.price * cartItem.quantity} €',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10), // Espacio entre elementos
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
-      child: ClipRRect(
-        child: Column(
-          children: [
-            Text(
-              'Total: ${totalPrice.toStringAsFixed(2)} €',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: cartItems.length,
-                itemBuilder: (context, index) {
-                  final cartItem = cartItems[index];
-                  return Text(
-                    '${cartItem.product.image} x ${cartItem.quantity} - ${cartItem.product.price * cartItem.quantity} €',
-                    style: TextStyle(fontSize: 16.0),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-    );
-  }
+    ),
+  );
+}
 }
