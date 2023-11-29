@@ -1,31 +1,10 @@
-abstract class DataState{
-  const DataState();
-}
+import 'package:plantilla_login_register/models/products.dart';
 
-class InitialDataState extends DataState {
-  @override
-  List<Object> get props => [];
-}
+class DataState{
+  List<Products> products = [];
+  DataState();
 
-class LoadingDataState extends DataState {
-  @override
-  List<Object> get props => [];
-}
-
-class LoadedDataState extends DataState {
-  final dynamic data;
-
-  LoadedDataState(this.data);
-
-  @override
-  List<Object> get props => [data];
-}
-
-class ErrorDataState extends DataState {
-  final String error;
-
-  ErrorDataState(this.error);
-
-  @override
-  List<Object> get props => [error];
+  void setData(List<Products> products){
+      this.products = products;
+  }
 }
