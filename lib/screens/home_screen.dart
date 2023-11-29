@@ -94,24 +94,32 @@ class _HomeScreenWidgetsState extends State<HomeScreenWidgets> {
         ),
         Row(
           children: [
-            ElevatedButton(
-              onPressed: () => {
-                setState(() {
-                  productsCart.removeFromCart(p);
-                })
-              },
-              child: const Icon(Icons.remove),
+            Container(
+              width: 40,
+              height: 30,
+              child: ElevatedButton(
+                onPressed: () => {
+                  setState(() {
+                    productsCart.removeFromCart(p);
+                  })
+                },
+                child: const Icon(Icons.remove, size: 10,),
+              ),
             ),
             const Expanded(child: SizedBox()),
             Text("${p.price}€"),
             const Expanded(child: SizedBox()),
-            ElevatedButton(
-              onPressed: () => {
-                setState(() {
-                  productsCart.addToCart(p);
-                })
-              },
-              child: const Icon(Icons.add),
+            Container(
+              width: 40,
+              height: 30,
+              child: ElevatedButton(
+                onPressed: () => {
+                  setState(() {
+                    productsCart.addToCart(p);
+                  })
+                },
+                child: const Icon(Icons.add, size: 10,),
+              ),
             ),
           ],
         ),

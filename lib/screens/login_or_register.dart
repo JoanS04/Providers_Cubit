@@ -34,13 +34,13 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
     //Descomentar las siguientes lineas para generar un efecto de "respiracion"
-    /*animation.addStatusListener((status) {
+    animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         controller.reverse();
       } else if (status == AnimationStatus.dismissed) {
         controller.forward();
       }
-    });*/
+    });
     controller.forward();
   }
 
