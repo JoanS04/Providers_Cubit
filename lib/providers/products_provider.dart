@@ -31,6 +31,8 @@ class ProductsProvider extends Cubit<DataState> {
   }
 
   add(Products p){
-    emit(DataState()..suma(p));
+    print(DataState()..contador[p]);
+    print(p);
+    emit(state..setContador(p, 2));
   }
 }

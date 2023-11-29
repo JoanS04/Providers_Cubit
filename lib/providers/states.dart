@@ -13,8 +13,8 @@ class DataState{
       }
   }
 
-  void suma(Products p){
-    int num = (contador[p]!);
-    contador[p] = num++;
+  void setContador(Products p, int num){
+    contador[p] = num;
+    print(contador[p]);
   }
 }

@@ -86,11 +86,11 @@ class listWidgets extends StatelessWidget {
         ),
         Row(
           children: [
-            ElevatedButton(onPressed: () => {productsCubit.add(p)}, child: const Icon(Icons.remove)),
+            ElevatedButton(onPressed: () => {}, child: const Icon(Icons.remove)),
             const Expanded(child: SizedBox()),
             Text("${p.price}€"),
             const Expanded(child: SizedBox()),
-            ElevatedButton(onPressed: () => {}, child: const Icon(Icons.add)),
+            ElevatedButton(onPressed: () => {productsCubit.add(p)}, child: const Icon(Icons.add)),
           ],
         ),
       ],
