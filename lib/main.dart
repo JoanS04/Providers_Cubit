@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantilla_login_register/providers/products_provider.dart';
+import 'package:plantilla_login_register/providers/products_provider_card.dart';
 import 'package:plantilla_login_register/providers/states.dart';
 import 'package:plantilla_login_register/screens/home_screen.dart';
 import 'package:plantilla_login_register/screens/login_or_register.dart';
@@ -10,12 +11,13 @@ void main() => runApp(AppState());
 class AppState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BlocProvider(
-        create: (context) => ProductsProvider(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ProductsProvider()),
+        BlocProvider(create: (context) => ProductsProviderCard()),
+      ],
         child: MyApp(),
-      ),
-    );
+      );
   }
 }
 

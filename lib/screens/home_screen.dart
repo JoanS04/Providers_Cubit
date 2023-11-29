@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantilla_login_register/models/products.dart';
 import 'package:plantilla_login_register/providers/products_provider.dart';
+import 'package:plantilla_login_register/providers/products_provider_card.dart';
 import 'package:plantilla_login_register/providers/states.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -46,6 +47,7 @@ class listWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productsCubit = BlocProvider.of<ProductsProvider>(context);
+    final productsCart = BlocProvider.of<ProductsProviderCard>(context);
     productsCubit.fetchData();
     return Row(
       children: [
@@ -54,7 +56,7 @@ class listWidgets extends StatelessWidget {
                 return Column(
                   children: [
                     for (int i = 0; i < ((state.products.length > 0)? 3 : 0); i++)
-                      _cardArticle(state.products[i])
+                      _cardArticle(state.products[i], productsCart)
                   ],
                 );
               },
@@ -64,7 +66,7 @@ class listWidgets extends StatelessWidget {
               builder: (context, state) {
                 return Column(
                   children: [
-                    _cardCarts(),
+                    _cardCarts(productsCart),
                   ],
                 );
               },
@@ -73,7 +75,8 @@ class listWidgets extends StatelessWidget {
     );
   }
 
-  Widget _cardArticle(Products p) {
+  Widget _cardArticle(Products p, ProductsProviderCard productsCart) {
+    
     final targeta = Column(
       children: [
         FadeInImage(
@@ -85,11 +88,15 @@ class listWidgets extends StatelessWidget {
         ),
         Row(
           children: [
-            ElevatedButton(onPressed: () => {}, child: const Icon(Icons.remove)),
+            ElevatedButton(onPressed: () => {
+              productsCart.removeFromCart(p)
+            }, child: const Icon(Icons.remove)),
             const Expanded(child: SizedBox()),
             Text("${p.price}€"),
             const Expanded(child: SizedBox()),
-            ElevatedButton(onPressed: () => {}, child: const Icon(Icons.add)),
+            ElevatedButton(onPressed: () => {
+              productsCart.addToCart(p)
+            }, child: const Icon(Icons.add)),
           ],
         ),
       ],
@@ -115,7 +122,7 @@ class listWidgets extends StatelessWidget {
     );
   }
 
-  Widget _cardCarts() {
+  Widget _cardCarts(ProductsProviderCard providerCard) {
     final targeta = Row(
       children: [
         const FadeInImage(

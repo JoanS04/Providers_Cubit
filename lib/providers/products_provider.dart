@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:plantilla_login_register/models/card_item.dart';
 import 'package:plantilla_login_register/models/products.dart';
 import 'dart:convert';
 import 'dart:convert' as convert;
 
 import 'package:plantilla_login_register/providers/states.dart';
+
 
 class ProductsProvider extends Cubit<DataState> {
   ProductsProvider() : super(DataState());
@@ -29,4 +31,6 @@ class ProductsProvider extends Cubit<DataState> {
       // emit(ErrorDataState('Error: $e'));
     }
   }
+  
 }
+
