@@ -5,6 +5,7 @@ import 'package:plantilla_login_register/providers/products_provider.dart';
 import 'package:plantilla_login_register/providers/products_provider_card.dart';
 import 'package:plantilla_login_register/providers/states.dart';
 
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -26,24 +27,30 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: CounterScreen(),
-      );
+      body: BlocProvider(
+        create: (context) => ProductsProvider(),
+        child: HomeScreenWidgets(),
+      ),
+    );
   }
-
-  
-  
 }
+
 class CounterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProductsProvider(),
-      child: listWidgets(),
+      child: HomeScreenWidgets(),
     );
   }
 }
 
-class listWidgets extends StatelessWidget {
+class HomeScreenWidgets extends StatefulWidget {
+  @override
+  _HomeScreenWidgetsState createState() => _HomeScreenWidgetsState();
+}
+
+class _HomeScreenWidgetsState extends State<HomeScreenWidgets> {
   @override
   Widget build(BuildContext context) {
     final productsCubit = BlocProvider.of<ProductsProvider>(context);
@@ -52,58 +59,67 @@ class listWidgets extends StatelessWidget {
     return Row(
       children: [
         BlocBuilder<ProductsProvider, DataState>(
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    for (int i = 0; i < ((state.products.length > 0)? 3 : 0); i++)
-                      _cardArticle(state.products[i], productsCart)
-                  ],
-                );
-              },
-            ),
+          builder: (context, state) {
+            return Column(
+              children: [
+                for (int i = 0; i < ((state.products.length > 0) ? 3 : 0); i++)
+                  _cardArticle(state.products[i], productsCart, context),
+              ],
+            );
+          },
+        ),
         Expanded(child: SizedBox()),
         BlocBuilder<ProductsProvider, DataState>(
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    _cardCarts(productsCart),
-                  ],
-                );
-              },
-            ),  
+          builder: (context, state) {
+            return Column(
+              children: [
+                _cardCarts(productsCart, context),
+              ],
+            );
+          },
+        ),
       ],
     );
   }
 
-  Widget _cardArticle(Products p, ProductsProviderCard productsCart) {
-    
+  Widget _cardArticle(Products p, ProductsProviderCard productsCart, BuildContext context) {
     final targeta = Column(
       children: [
         FadeInImage(
           placeholder: NetworkImage('https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'),
           image: NetworkImage(p.image),
           fadeInDuration: Duration(milliseconds: 100),
-          width: 180,
+          width: MediaQuery.of(context).size.width * 0.25,
           fit: BoxFit.cover,
         ),
         Row(
           children: [
-            ElevatedButton(onPressed: () => {
-              productsCart.removeFromCart(p)
-            }, child: const Icon(Icons.remove)),
+            ElevatedButton(
+              onPressed: () => {
+                setState(() {
+                  productsCart.removeFromCart(p);
+                })
+              },
+              child: const Icon(Icons.remove),
+            ),
             const Expanded(child: SizedBox()),
             Text("${p.price}€"),
             const Expanded(child: SizedBox()),
-            ElevatedButton(onPressed: () => {
-              productsCart.addToCart(p)
-            }, child: const Icon(Icons.add)),
+            ElevatedButton(
+              onPressed: () => {
+                setState(() {
+                  productsCart.addToCart(p);
+                })
+              },
+              child: const Icon(Icons.add),
+            ),
           ],
         ),
       ],
     );
     return Container(
-      width: 200,
-      height: 240,
+      width: MediaQuery.of(context).size.width * 0.35,
+      height: MediaQuery.of(context).size.height * 0.25,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
@@ -122,21 +138,17 @@ class listWidgets extends StatelessWidget {
     );
   }
 
-  Widget _cardCarts(ProductsProviderCard providerCard) {
-    final targeta = Row(
-      children: [
-        FadeInImage(
-          placeholder: NetworkImage('https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'),
-          image: NetworkImage(p.image),
-          fadeInDuration: Duration(milliseconds: 100),
-          width: 50,
-          fit: BoxFit.cover,
-        ),
-        Expanded(child: Text("${num} U ${num * p.price}€", textAlign: TextAlign.center)),
-      ],
-    );
+  Widget _cardCarts(ProductsProviderCard providerCart, BuildContext context) {
+    final cartItems = providerCart.state.cart;
+    double totalPrice = 0.0;
+
+    for (final cartItem in cartItems) {
+      totalPrice += cartItem.product.price * cartItem.quantity;
+    }
+
     return Container(
-      width: 200,
+      width: MediaQuery.of(context).size.width * 0.4,
+      height: MediaQuery.of(context).size.height * 0.3,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
@@ -149,7 +161,26 @@ class listWidgets extends StatelessWidget {
         ],
       ),
       child: ClipRRect(
-        child: targeta,
+        child: Column(
+          children: [
+            Text(
+              'Total: ${totalPrice.toStringAsFixed(2)} €',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) {
+                  final cartItem = cartItems[index];
+                  return Text(
+                    '${cartItem.product.image} x ${cartItem.quantity} - ${cartItem.product.price * cartItem.quantity} €',
+                    style: TextStyle(fontSize: 16.0),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
         borderRadius: BorderRadius.circular(10.0),
       ),
     );
