@@ -125,14 +125,14 @@ class listWidgets extends StatelessWidget {
   Widget _cardCarts(ProductsProviderCard providerCard) {
     final targeta = Row(
       children: [
-        const FadeInImage(
+        FadeInImage(
           placeholder: NetworkImage('https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'),
-          image: NetworkImage('https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg?cs=srgb&dl=pexels-pixabay-268533.jpg&fm=jpg'),
+          image: NetworkImage(p.image),
           fadeInDuration: Duration(milliseconds: 100),
           width: 50,
           fit: BoxFit.cover,
         ),
-        Expanded(child: Text("Cantidad preutotal", textAlign: TextAlign.center)),
+        Expanded(child: Text("${num} U ${num * p.price}€", textAlign: TextAlign.center)),
       ],
     );
     return Container(
