@@ -1,4 +1,4 @@
-import 'package:plantilla_login_register/models/products.dart';
+import 'package:plantilla_login_register/models/models.dart';
 
 class CartItem {
   final Products product;

@@ -1,4 +1,4 @@
-import 'package:plantilla_login_register/models/products.dart';
+
 
 class Login {
   final String username;

@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantilla_login_register/models/login.dart';
-import 'package:plantilla_login_register/providers/products_provider_login.dart';
-import 'package:plantilla_login_register/providers/states_login.dart';
+import 'package:plantilla_login_register/models/models.dart';
+import 'package:plantilla_login_register/providers/providers.dart';
+import 'package:plantilla_login_register/states/states.dart';
 
 class LoginOrRegisterScreen extends StatefulWidget {
   @override
@@ -28,8 +28,9 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
   bool _isChecked = false;
 
   bool _isLoading = false;
+  bool _isDisposed = false;
 
-  bool _isDisposed = true;
+  late StreamSubscription _loginCubitSubscription;
 
   @override
   void initState() {
@@ -41,17 +42,45 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
     controller.forward();
+
+    _subscribeToLoginCubit();
   }
 
   @override
   void dispose() {
     _isDisposed = true;
+    _cancelLoginCubitSubscription();
     controller.dispose();
     super.dispose();
   }
 
+  void _subscribeToLoginCubit() {
+    final loginCubit = BlocProvider.of<ProductsProviderLogin>(context);
+
+    _loginCubitSubscription = loginCubit.stream.listen((state) {
+      if (!_isDisposed) {
+        if (state is CorrectLoginDataState) {
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.of(context).pushReplacementNamed('/', arguments: state.usuario);
+        } else if (state is ErrorDataState) {
+          setState(() {
+            print("ERROR");
+            _isLoading = false;
+            missatge = state.error;
+          });
+        }
+      }
+    });
+  }
+
+  void _cancelLoginCubitSubscription() {
+    _loginCubitSubscription.cancel();
+  }
+
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
@@ -75,7 +104,7 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     );
   }
 
- Widget loginOrRegister() {
+  Widget loginOrRegister() {
     return ToggleButtons(
       direction: Axis.horizontal,
       onPressed: (int index) {
@@ -191,45 +220,21 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     );
   }
 
-_loginRegisterRequest() {
-  if (_key.currentState!.validate()) {
-    _key.currentState!.save();
-     if (!_isDisposed) {
-      setState(() {
-        _isLoading = true;
-      });
-    } 
+  void _loginRegisterRequest() {
+    if (_key.currentState!.validate()) {
+      _key.currentState!.save();
+      if (!_isDisposed) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
 
-    final loginCubit = BlocProvider.of<ProductsProviderLogin>(context);
-    final login = Login(username: _correu!, password: _passwd!);
-    print(login);
-    print(login.username);
-    loginCubit.loginAtemt(login);
-    // Listen to state changes in the loginCubit
-    loginCubit.stream.listen((state) {
-      //if (!_isDisposed) {
-        print("HOLA");
-        if (state is CorrectLoginDataState) {
-          print("CORRECTE");
-          print(state.usuario);
-          print(login.username);
-          setState(() {
-            _isLoading = false;
-          });
-          Navigator.of(context).pushReplacementNamed('/', arguments: state.usuario);
-        } else if (state is ErrorDataState) {
-          setState(() {
-            print("INCORRECTE");
-            _isLoading = false;
-            missatge = state.error;
-          });
-        }
-  
-    });
+      final loginCubit = BlocProvider.of<ProductsProviderLogin>(context);
+      final login = Login(username: _correu!, password: _passwd!);
+      loginCubit.loginAtemt(login);
+    }
   }
 }
-    }
-
 
 class AnimatedLogo extends AnimatedWidget {
   // Maneja los Tween estáticos debido a que estos no cambian.

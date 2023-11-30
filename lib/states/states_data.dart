@@ -1,5 +1,5 @@
   
-import 'package:plantilla_login_register/models/products.dart';
+import 'package:plantilla_login_register/models/models.dart';
 class DataState{
   List<Products> products = [];
   Map<Products, int> contador = {};
@@ -11,12 +11,5 @@ class DataState{
       contador[prod] = 1;
       
       }
-  }
-
- /*  void setContador(Products p, int num){
-    contador[p] = num;
-    print(contador[p]);
-  } */
-
-  
+  }  
 }

@@ -1,11 +1,7 @@
-import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:plantilla_login_register/models/products.dart';
-import 'dart:convert';
-
-import 'package:plantilla_login_register/providers/states.dart';
-
-
+import 'package:plantilla_login_register/providers/providers.dart';
+import 'package:plantilla_login_register/states/states.dart';
 class ProductsProvider extends Cubit<DataState> {
   ProductsProvider() : super(DataState());
 
@@ -20,7 +16,6 @@ class ProductsProvider extends Cubit<DataState> {
         final List<Products> productList =
             data.map((item) => Products.fromMap(item)).toList();
 
-        print(productList);
         emit(DataState()..setData(productList));
       } else {
         // emit(ErrorDataState('Error: ${response.statusCode}'));

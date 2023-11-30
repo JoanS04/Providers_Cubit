@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:plantilla_login_register/models/models.dart';
 
 class Products {
     String image;

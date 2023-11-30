@@ -1,8 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:plantilla_login_register/models/card_item.dart';
-import 'package:plantilla_login_register/models/products.dart';
 
-import 'package:plantilla_login_register/providers/states_card.dart';
+import 'package:plantilla_login_register/models/models.dart';
+import 'package:plantilla_login_register/providers/providers.dart';
+import 'package:plantilla_login_register/states/states.dart';
+
+
 
 class ProductsProviderCard extends Cubit<DataStateCard> {
   List<CartItem> cart = [];
@@ -16,8 +17,6 @@ void addToCart(Products product) {
     if (cartItem.product.image == product.image) {
       // Increment quantity of existing item
       cartItem.quantity++;
-      print(cartItem.quantity);
-      print(cartItem.product.image);
       return; // Exit the loop since the product is already in the cart
     }
   }

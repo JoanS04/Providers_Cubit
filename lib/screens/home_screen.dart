@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantilla_login_register/models/products.dart';
-import 'package:plantilla_login_register/providers/products_provider.dart';
-import 'package:plantilla_login_register/providers/products_provider_card.dart';
-import 'package:plantilla_login_register/providers/states.dart';
+import 'package:plantilla_login_register/providers/providers.dart';
+import 'package:plantilla_login_register/states/states.dart';
 
 
 class HomeScreen extends StatelessWidget {
