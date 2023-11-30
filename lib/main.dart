@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:plantilla_login_register/providers/products_provider.dart';
 import 'package:plantilla_login_register/providers/products_provider_card.dart';
+import 'package:plantilla_login_register/providers/products_provider_login.dart';
 import 'package:plantilla_login_register/screens/home_screen.dart';
 import 'package:plantilla_login_register/screens/login_or_register.dart';
 
@@ -14,6 +15,7 @@ class AppState extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => ProductsProvider()),
         BlocProvider(create: (context) => ProductsProviderCard()),
+        BlocProvider(create: (context) => ProductsProviderLogin())
       ],
         child: MyApp(),
       );

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:plantilla_login_register/models/login.dart';
+import 'package:plantilla_login_register/providers/products_provider_login.dart';
+import 'package:plantilla_login_register/providers/states_login.dart';
 
 class LoginOrRegisterScreen extends StatefulWidget {
   @override
@@ -25,7 +29,10 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
 
   bool _isLoading = false;
 
-  initState() {
+  bool _isDisposed = true;
+
+  @override
+  void initState() {
     super.initState();
     controller = AnimationController(
       duration: const Duration(milliseconds: 1000),
@@ -33,20 +40,12 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     );
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
-    //Descomentar las siguientes lineas para generar un efecto de "respiracion"
-    // animation.addStatusListener((status) {
-    //   if (status == AnimationStatus.completed) {
-    //     controller.reverse();
-    //   } else if (status == AnimationStatus.dismissed) {
-    //     controller.forward();
-    //   }
-    // });
     controller.forward();
   }
 
   @override
-  dispose() {
-    // Es important SEMPRE realitzar el dispose del controller.
+  void dispose() {
+    _isDisposed = true;
     controller.dispose();
     super.dispose();
   }
@@ -63,6 +62,11 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
               child: AnimatedLogo(animation: animation),
             ),
             if (isLogin || isRegister) loginOrRegisterForm(),
+            if (missatge.isNotEmpty) // Mostrar el mensaje si no está vacío
+            Text(
+              missatge,
+              style: TextStyle(color: Colors.red),
+            ),
             SizedBox(height: 100),
             loginOrRegister()
           ],
@@ -71,7 +75,7 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     );
   }
 
-  Widget loginOrRegister() {
+ Widget loginOrRegister() {
     return ToggleButtons(
       direction: Axis.horizontal,
       onPressed: (int index) {
@@ -187,21 +191,45 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
     );
   }
 
-  _loginRegisterRequest() async {
-    if (_key.currentState!.validate()) {
-      _key.currentState!.save();
+_loginRegisterRequest() {
+  if (_key.currentState!.validate()) {
+    _key.currentState!.save();
+     if (!_isDisposed) {
       setState(() {
         _isLoading = true;
       });
-      // Aquí es realitzaria la petició de login a l'API o similar
-      missatge = 'Gràcies \n $_correu \n $_passwd';
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pushReplacementNamed('/', arguments: missatge);
-    }
+    } 
+
+    final loginCubit = BlocProvider.of<ProductsProviderLogin>(context);
+    final login = Login(username: _correu!, password: _passwd!);
+    print(login);
+    print(login.username);
+    loginCubit.loginAtemt(login);
+    // Listen to state changes in the loginCubit
+    loginCubit.stream.listen((state) {
+      //if (!_isDisposed) {
+        print("HOLA");
+        if (state is CorrectLoginDataState) {
+          print("CORRECTE");
+          print(state.usuario);
+          print(login.username);
+          setState(() {
+            _isLoading = false;
+          });
+          Navigator.of(context).pushReplacementNamed('/', arguments: state.usuario);
+        } else if (state is ErrorDataState) {
+          setState(() {
+            print("INCORRECTE");
+            _isLoading = false;
+            missatge = state.error;
+          });
+        }
+  
+    });
   }
 }
+    }
+
 
 class AnimatedLogo extends AnimatedWidget {
   // Maneja los Tween estáticos debido a que estos no cambian.

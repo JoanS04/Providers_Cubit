@@ -13,10 +13,10 @@ class DataState{
       }
   }
 
-  void setContador(Products p, int num){
+ /*  void setContador(Products p, int num){
     contador[p] = num;
     print(contador[p]);
-  }
+  } */
 
   
 }
