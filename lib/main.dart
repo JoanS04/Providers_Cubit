@@ -13,11 +13,10 @@ class AppState extends StatelessWidget {
         BlocProvider(create: (context) => ProductsProviderCard()),
         BlocProvider(create: (context) => ProductsProviderLogin())
       ],
-        child: MyApp(),
-      );
+      child: MyApp(),
+    );
   }
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

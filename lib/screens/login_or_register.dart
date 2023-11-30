@@ -66,7 +66,6 @@ class _LoginOrRegisterScreenState extends State<LoginOrRegisterScreen>
           Navigator.of(context).pushReplacementNamed('/', arguments: state.usuario);
         } else if (state is ErrorDataState) {
           setState(() {
-            print("ERROR");
             _isLoading = false;
             missatge = state.error;
           });

@@ -5,6 +5,4 @@ class CartItem {
   int quantity;
 
   CartItem({required this.product, required this.quantity});
-
-  
 }
